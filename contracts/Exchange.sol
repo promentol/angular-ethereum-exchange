@@ -22,7 +22,7 @@ contract Exchange is owned {
 
     struct Token {
         address tokenContract;
-        string symbolName;
+        string tokenName;
 
         mapping(uint8 => Offer) buyBook;
         uint8 buyBookLength;
@@ -39,6 +39,15 @@ contract Exchange is owned {
         uint amountSellPrice;
     }
 
+    //Events
+
+    event TokenAddedToSystem(uint tokenNumber, string _token, uint _timestamp);
+
+    event DepositForTokenReceived(address indexed _from, uint indexed _tokenNumber, uint _amount, uint _timestamp);
+    event WithdrawalToken(address indexed _to, uint indexed _tokenNumber, uint _amount, uint _timestamp);
+    event DepositForEthReceived(address indexed _from, uint _amount, uint _timestamp);
+    event WithdrawalEth(address indexed _to, uint _amount, uint _timestamp);
+
     mapping(uint8 => Token) tokens;
     uint8 tokensLength;
 
@@ -49,24 +58,26 @@ contract Exchange is owned {
 
     //Token Management
 
-    function addToken(string symbolName, address erc20tokenAddress) public onlyOwner {
+    function addToken(string tokenName, address erc20tokenAddress) public onlyOwner {
         //check if a token with that symbol has been already added
-        require(!hasToken(symbolName));
+        require(!hasToken(tokenName));
         tokensLength++;
-        tokens[tokensLength].symbolName = symbolName;
+        tokens[tokensLength].tokenName = tokenName;
         tokens[tokensLength].tokenContract = erc20tokenAddress;
+
+        TokenAddedToSystem(tokensLength, tokenName, block.timestamp);
     }
 
-    function hasToken(string symbolName) public view returns (bool) {
-        if (getSymbolIndex(symbolName) == 0) {
+    function hasToken(string tokenName) public view returns (bool) {
+        if (getSymbolIndex(tokenName) == 0) {
             return false;
         }
         return true;
     }
 
-    function getSymbolIndex(string symbolName) internal view returns (uint8) {
+    function getSymbolIndex(string tokenName) internal view returns (uint8) {
         for (uint8 i = 1; i <= tokensLength; ++i) {
-            if (stringsEqual(tokens[i].symbolName, symbolName)) {
+            if (stringsEqual(tokens[i].tokenName, tokenName)) {
                 return i;
             }
         }
@@ -83,6 +94,7 @@ contract Exchange is owned {
     function depositEther() public payable {
         require(balanceEthForAddress[msg.sender] + msg.value >= balanceEthForAddress[msg.sender]);
         balanceEthForAddress[msg.sender] += msg.value;
+        DepositForEthReceived(msg.sender, uint(msg.value), block.timestamp);
     }
 
     function withdrawEther(uint amountInWei) public {
@@ -90,6 +102,7 @@ contract Exchange is owned {
         require(balanceEthForAddress[msg.sender] - amountInWei < balanceEthForAddress[msg.sender]);
         balanceEthForAddress[msg.sender] -= amountInWei;
         msg.sender.transfer(amountInWei);
+        WithdrawalEth(msg.sender, amountInWei, block.timestamp);
     }
 
     function getEthBalanceInWei() view public returns (uint) {
@@ -99,8 +112,8 @@ contract Exchange is owned {
 
     // Tokens
 
-    function depositToken(string symbolName, uint amount) public {
-        uint8 tokenNumber = getSymbolIndex(symbolName);
+    function depositToken(string tokenName, uint amount) public {
+        uint8 tokenNumber = getSymbolIndex(tokenName);
         require(tokenNumber > 0);
 
         ERC20Interface token = ERC20Interface(tokens[tokenNumber].tokenContract);
@@ -109,10 +122,12 @@ contract Exchange is owned {
         
         require(tokenBalanceForAddress[msg.sender][tokenNumber] + amount > tokenBalanceForAddress[msg.sender][tokenNumber]);
         tokenBalanceForAddress[msg.sender][tokenNumber] += amount;
+
+        DepositForTokenReceived(msg.sender, tokenNumber, amount, block.timestamp);
     }
 
-    function withdrawToken(string symbolName, uint amount) public {
-        uint8 tokenNumber = getSymbolIndex(symbolName);
+    function withdrawToken(string tokenName, uint amount) public {
+        uint8 tokenNumber = getSymbolIndex(tokenName);
         require(tokenNumber > 0);
 
         require(tokenBalanceForAddress[msg.sender][tokenNumber] - amount >= 0);
@@ -123,10 +138,12 @@ contract Exchange is owned {
         tokenBalanceForAddress[msg.sender][tokenNumber] -= amount;
         require(token.transfer(msg.sender, amount) == true);
 
+        WithdrawalToken(msg.sender, tokenNumber, amount, block.timestamp);
+
     }
 
-    function getBalance(string symbolName) view public returns (uint) {
-        uint8 tokenNumber = getSymbolIndex(symbolName);
+    function getBalance(string tokenName) view public returns (uint) {
+        uint8 tokenNumber = getSymbolIndex(tokenName);
         require(tokenNumber > 0);
         return tokenBalanceForAddress[msg.sender][tokenNumber];
     }
