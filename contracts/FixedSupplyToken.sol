@@ -44,6 +44,7 @@ contract FixedSupplyToken is ERC20Interface, owned {
                 allowed[_from][msg.sender] -= _amount;
                 balances[_to] += _amount;
                 Transfer(_from, _to, _amount);
+                return true;
             } else {
                 return false;
             }

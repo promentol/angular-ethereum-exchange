@@ -2,6 +2,7 @@ pragma solidity ^0.4.8;
 
 import "./owned.sol";
 import "./FixedSupplyToken.sol";
+import "./ERC20Interface.sol";
 
 contract Exchange is owned {
     //Structures used
@@ -74,5 +75,59 @@ contract Exchange is owned {
 
     function stringsEqual(string a, string b) internal pure returns (bool) {
         return keccak256(a) == keccak256(b);
+    }
+
+
+    // deposits/withdraw ether
+
+    function depositEther() public payable {
+        require(balanceEthForAddress[msg.sender] + msg.value >= balanceEthForAddress[msg.sender]);
+        balanceEthForAddress[msg.sender] += msg.value;
+    }
+
+    function withdrawEther(uint amountInWei) public {
+        require(balanceEthForAddress[msg.sender] - amountInWei >= 0);
+        require(balanceEthForAddress[msg.sender] - amountInWei < balanceEthForAddress[msg.sender]);
+        balanceEthForAddress[msg.sender] -= amountInWei;
+        msg.sender.transfer(amountInWei);
+    }
+
+    function getEthBalanceInWei() view public returns (uint) {
+        return balanceEthForAddress[msg.sender];
+    }
+
+
+    // Tokens
+
+    function depositToken(string symbolName, uint amount) public {
+        uint8 tokenNumber = getSymbolIndex(symbolName);
+        require(tokenNumber > 0);
+
+        ERC20Interface token = ERC20Interface(tokens[tokenNumber].tokenContract);
+
+        require(token.transferFrom(msg.sender, address(this), amount) == true);
+        
+        require(tokenBalanceForAddress[msg.sender][tokenNumber] + amount > tokenBalanceForAddress[msg.sender][tokenNumber]);
+        tokenBalanceForAddress[msg.sender][tokenNumber] += amount;
+    }
+
+    function withdrawToken(string symbolName, uint amount) public {
+        uint8 tokenNumber = getSymbolIndex(symbolName);
+        require(tokenNumber > 0);
+
+        require(tokenBalanceForAddress[msg.sender][tokenNumber] - amount >= 0);
+        require(tokenBalanceForAddress[msg.sender][tokenNumber] - amount < tokenBalanceForAddress[msg.sender][tokenNumber]);
+
+        ERC20Interface token = ERC20Interface(tokens[tokenNumber].tokenContract);
+        
+        tokenBalanceForAddress[msg.sender][tokenNumber] -= amount;
+        require(token.transfer(msg.sender, amount) == true);
+
+    }
+
+    function getBalance(string symbolName) view public returns (uint) {
+        uint8 tokenNumber = getSymbolIndex(symbolName);
+        require(tokenNumber > 0);
+        return tokenBalanceForAddress[msg.sender][tokenNumber];
     }
 }
