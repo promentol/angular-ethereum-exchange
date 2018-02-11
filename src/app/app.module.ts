@@ -4,7 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {MetaModule} from './meta/meta.module';
+import { ExchangeModule } from './exchange/exchange.module';
+
+import { RouterModule, Routes } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import {MetaModule} from './meta/meta.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    MetaModule
+    ExchangeModule,
+    RouterModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]
