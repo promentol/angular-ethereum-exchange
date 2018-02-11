@@ -24,5 +24,15 @@
 </nav>
 
 <div class="container-fluid">
-    <router-outlet></router-outlet>
+    <div class="row">
+        <router-outlet></router-outlet>
+        <div class="col-lg-4" style="background-color: #eee; min-height: 100vh;">
+            <app-events>
+            </app-events>
+            <app-assets>
+            </app-assets>
+            <app-javascript-status>
+            </app-javascript-status>
+        </div>
+    </div>
 </div>
