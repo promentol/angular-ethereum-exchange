@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
+import { ExchangeService } from '../../util/exchange.service';
 
 @Component({
   selector: 'app-main',
@@ -7,7 +8,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  constructor(public exchangeService: ExchangeService) { }
 
   @HostBinding('class.col-lg-8') someField = true;
 
