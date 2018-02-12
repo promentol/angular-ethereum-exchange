@@ -7,13 +7,13 @@
     <form>
       <div class="form-group">
         <label for="inputAmountDepositEther">Amount in Ether</label>
-        <input type="number" name="inputAmountDepositEther" class="form-control" id="inputAmountDepositEther" placeholder="e.g., 95">
+        <input type="number" name="inputAmountDepositEther" [(ngModel)]="amount" class="form-control" id="inputAmountDepositEther" placeholder="e.g., 95">
       </div>
 
     </form>
   </div>
   <div class="panel-footer">
-    <button type="button" class="btn btn-default" onclick="App.depositEther();return false;">Deposit Ether
+    <button type="button" class="btn btn-default" (click)="depositEth()">Deposit Ether
     </button>
   </div>
 </div>

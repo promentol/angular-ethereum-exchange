@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExchangeService } from '../../util/exchange.service';
 
 @Component({
   selector: 'app-deposit-token',
@@ -7,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DepositTokenComponent implements OnInit {
 
-  constructor() { }
+  constructor(public exchangeService: ExchangeService) { }
+
+  public amount: number;
+  public tokenName: string;
+
+  depositToken() {
+    this.exchangeService.depositToken(this.tokenName, this.amount);
+  }
 
   ngOnInit() {
   }

@@ -19,11 +19,14 @@ const appRoutes: Routes = [
   { path: 'trading', component: TradingComponent }
 ];
 
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(appRoutes),
-    UtilModule
+    UtilModule,
+    FormsModule
   ],
   declarations: [
     MainComponent,
@@ -36,7 +39,7 @@ const appRoutes: Routes = [
     AssetsComponent,
     JavascriptStatusComponent,
     EventsComponent
-  ], 
+  ],
   exports: [
     MainComponent,
     ManageTokenComponent,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExchangeService } from '../../util/exchange.service';
 
 @Component({
   selector: 'app-withdraw-eth',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WithdrawEthComponent implements OnInit {
 
-  constructor() { }
+  public amount: number;
+
+  constructor(public exchangeService: ExchangeService) { }
 
   ngOnInit() {
+  }
+
+  withdrawEth() {
+    this.exchangeService.withdrawEth(this.amount);
   }
 
 }

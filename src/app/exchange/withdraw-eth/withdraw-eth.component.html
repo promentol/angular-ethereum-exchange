@@ -5,14 +5,14 @@
   <div class="panel-body">
     <form>
       <div class="form-group">
-        <label for="inputAmountWithdrawalEther">Amount in Token</label>
-        <input type="number" name="inputAmountWithdrawalEther" class="form-control" id="inputAmountWithdrawalEther" placeholder="e.g., 95">
+        <label for="inputAmountWithdrawalEther">Amount in Wei</label>
+        <input type="number" [(ngModel)]="amount" name="inputAmountWithdrawalEther" class="form-control" id="inputAmountWithdrawalEther" placeholder="e.g., 95">
       </div>
 
     </form>
   </div>
   <div class="panel-footer">
-    <button type="button" class="btn btn-default" onclick="App.withdrawEther();return false;">
+    <button type="button" (click)="withdrawEth()" class="btn btn-default" onclick="App.withdrawEther();return false;">
       Withdraw Ether
     </button>
   </div>
