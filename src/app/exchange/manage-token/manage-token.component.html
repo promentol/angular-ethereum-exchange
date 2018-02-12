@@ -3,7 +3,7 @@
   <br/> Additionally you can add a token to the exchange provided in this example.</p>
 <h3>You have
   <span class="black">
-    <span id="balanceTokenInToken"></span> TOKEN</span> in your account</h3>
+    <span id="balanceTokenInToken"></span> {{exchangeService.balanceTokenInExchange | async}}</span> in your account</h3>
 
 <br>
 <div class="row">
@@ -15,13 +15,13 @@
         <form>
           <div class="form-group">
             <label for="inputAmountSendToken">Amount in Token</label>
-            <input type="number" name="inputAmountSendToken" class="form-control" id="inputAmountSendToken" placeholder="e.g., 95">
+            <input type="number" name="inputAmountSendToken" [(ngModel)]="inputAmountSendToken" class="form-control" id="inputAmountSendToken" placeholder="e.g., 95">
           </div>
           <div class="form-group">
             <label for="inputBeneficiarySendToken">To (address)</label>
-            <input type="text" class="form-control" id="inputBeneficiarySendToken" name="inputBeneficiarySendToken" placeholder="e.g. 0x123ABde44...">
+            <input type="text" class="form-control" [(ngModel)]="inputBeneficiarySendToken" id="inputBeneficiarySendToken" name="inputBeneficiarySendToken" placeholder="e.g. 0x123ABde44...">
           </div>
-          <button type="button" class="btn btn-default" onclick="App.sendToken();return false;">
+          <button type="button" class="btn btn-default" (click)="sendToken()">
             Send Token
           </button>
         </form>
@@ -37,13 +37,13 @@
         <form>
           <div class="form-group">
             <label for="inputAmountAllowanceToken">Amount in Token</label>
-            <input type="number" name="inputAmountAllowanceToken" class="form-control" id="inputAmountAllowanceToken" placeholder="e.g., 95">
+            <input type="number" name="inputAmountAllowanceToken" [(ngModel)]="inputAmountAllowanceToken" class="form-control" id="inputAmountAllowanceToken" placeholder="e.g., 95">
           </div>
           <div class="form-group">
             <label for="inputBeneficiaryAllowanceToken">To (address)</label>
-            <input type="text" class="form-control" id="inputBeneficiaryAllowanceToken" name="inputBeneficiaryAllowanceToken" placeholder="e.g. 0x123ABde44...">
+            <input type="text" class="form-control" [(ngModel)]="inputBeneficiaryAllowanceToken" id="inputBeneficiaryAllowanceToken" name="inputBeneficiaryAllowanceToken" placeholder="e.g. 0x123ABde44...">
           </div>
-          <button type="button" class="btn btn-default" onclick="App.allowanceToken();return false;">Allow Token to be used
+          <button type="button" class="btn btn-default" (click)="allowanceToken()">Allow Token to be used
           </button>
         </form>
       </div>
@@ -66,13 +66,13 @@
     <form>
       <div class="form-group">
         <label for="inputNameTokenAddExchange">Name of the Token</label>
-        <input type="text" name="inputNameTokenAddExchange" class="form-control" id="inputNameTokenAddExchange" placeholder="FIXED">
+        <input type="text" name="inputNameTokenAddExchange" [(ngModel)]="inputNameTokenAddExchange" class="form-control" id="inputNameTokenAddExchange" placeholder="FIXED">
       </div>
       <div class="form-group">
         <label for="inputAddressTokenAddExchange">Address of Token</label>
-        <input type="text" class="form-control" id="inputAddressTokenAddExchange" name="inputAddressTokenAddExchange" placeholder="e.g. 0x123ABde44...">
+        <input type="text" class="form-control" [(ngModel)]="inputAddressTokenAddExchange" id="inputAddressTokenAddExchange" name="inputAddressTokenAddExchange" placeholder="e.g. 0x123ABde44...">
       </div>
-      <button type="button" class="btn btn-default" onclick="App.addTokenToExchange();return false;">
+      <button type="button" class="btn btn-default" (click)="addTokenToExchange()">
         Add Token to Exchange
       </button>
     </form>

@@ -88,4 +88,28 @@ export class ExchangeService {
       });
     });
   }
+
+  sendToken(amount, receiver) {
+    return this.TokenContract.deployed().then(function (instance) {
+      return instance.transfer(receiver, amount, {
+        from: this.web3service.mainAccount
+      });
+    });
+  }
+
+  allowanceToken(amount, receiver) {
+    return this.TokenContract.deployed().then(function (instance) {
+      return instance.approve(receiver, amount, {
+        from: this.web3service.mainAccount
+      });
+    });
+  }
+
+  addTokenToExchange(nameOfToken, addressOfToken) {
+    return this.TokenContract.deployed().then(function (instance) {
+      return instance.approve(nameOfToken, addressOfToken, {
+        from: this.web3service.mainAccount
+      });
+    });
+  }
 }
