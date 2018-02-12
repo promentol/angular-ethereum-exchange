@@ -8,7 +8,8 @@ declare let window: any;
 
 @Injectable()
 export class Web3Service {
-  private web3: Web3;
+  public web3: any;
+  public mainAccount: any;
   private accounts: string[];
   public ready = false;
   public accountsObservable = new Subject<string[]>();
@@ -68,6 +69,7 @@ export class Web3Service {
 
         this.accountsObservable.next(accs);
         this.accounts = accs;
+        this.mainAccount = accs[0];
       }
 
       this.ready = true;
