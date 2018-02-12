@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExchangeService } from '../../util/exchange.service';
 
 @Component({
   selector: 'app-events',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public exchangeService: ExchangeService) { }
 
   ngOnInit() {
   }

@@ -10,7 +10,6 @@ import { DepositEthComponent } from './deposit-eth/deposit-eth.component';
 import { WithdrawEthComponent } from './withdraw-eth/withdraw-eth.component';
 import { WithdrawTokenComponent } from './withdraw-token/withdraw-token.component';
 import { AssetsComponent } from './assets/assets.component';
-import { JavascriptStatusComponent } from './javascript-status/javascript-status.component';
 import { EventsComponent } from './events/events.component';
 
 const appRoutes: Routes = [
@@ -37,7 +36,6 @@ import { FormsModule } from '@angular/forms';
     WithdrawEthComponent,
     WithdrawTokenComponent,
     AssetsComponent,
-    JavascriptStatusComponent,
     EventsComponent
   ],
   exports: [
@@ -49,7 +47,6 @@ import { FormsModule } from '@angular/forms';
     WithdrawEthComponent,
     WithdrawTokenComponent,
     AssetsComponent,
-    JavascriptStatusComponent,
     EventsComponent
   ]
 })

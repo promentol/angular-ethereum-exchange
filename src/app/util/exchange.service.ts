@@ -5,6 +5,7 @@ import { default as contract } from 'truffle-contract';
 import exchange_artifacts from '../../../build/contracts/Exchange.json';
 import token_artifacts from '../../../build/contracts/FixedSupplyToken.json';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ExchangeService {
@@ -14,6 +15,7 @@ export class ExchangeService {
 
   balanceTokenInExchange: BehaviorSubject<number>;
   balanceEtherInExchange: BehaviorSubject<number>;
+  events = new Subject();
 
   constructor(public web3service: Web3Service) {
     this.ExchangeContract = contract(exchange_artifacts);
@@ -75,6 +77,14 @@ export class ExchangeService {
     return this.ExchangeContract.deployed().then((instance) => {
       return instance.withdrawToken(tokenName, amount, {
         from: this.web3service.mainAccount
+      });
+    });
+  }
+
+  setupEvents() {
+    this.TokenContract.deployed().then((instance) => {
+      instance.allEvents({}, { fromBlock: 0, toBlock: 'latest' }).watch((err, result) => {
+        this.events.next(event);
       });
     });
   }

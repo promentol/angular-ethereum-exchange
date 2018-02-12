@@ -1,3 +1,9 @@
-<p>
-  events works!
-</p>
+<h3>Events from the Token Contract</h3>
+<div id="tokenEvents">
+  <div class="alert alert-info  alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <div>Args: {{exchangeService.events | async | json}}</div>
+  </div>
+</div>
